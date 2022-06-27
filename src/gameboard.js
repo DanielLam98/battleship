@@ -3,7 +3,7 @@ const Gameboard = () => {
   let markedSpotsGameboard = [];
 
   const setMarkedSpotsGameboard = (position) => {
-    markedSpotsGameboard = [...position];
+    markedSpotsGameboard.push(position);
   };
 
   const placeShip = (position) => {
@@ -31,7 +31,20 @@ const Gameboard = () => {
     return 'miss';
   };
 
-  return { setMarkedSpotsGameboard, placeShip, receiveAttack, hitShip };
+  const allShipsSunk = (shipsArr) => {
+    if (shipsArr.every((v) => markedSpotsGameboard.includes(v))) {
+      return true;
+    }
+    return false;
+  };
+
+  return {
+    setMarkedSpotsGameboard,
+    placeShip,
+    receiveAttack,
+    hitShip,
+    allShipsSunk,
+  };
 };
 
 module.exports = Gameboard;

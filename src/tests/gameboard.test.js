@@ -4,10 +4,10 @@ describe('testing the gameboard factory functionality', () => {
   let playerGameboard = Gameboard();
 
   const cruiser = { position: [1, 2, 3] };
-  const batteship = { position: [2, 12, 22] };
+  const batteship = { position: [4, 12, 22] };
   let occupiedShips = [];
   occupiedShips = [...cruiser.position, ...batteship.position];
-  playerGameboard.setMarkedSpotsGameboard([1, 3, 7, 8, 12, 13, 15, 20]);
+  //playerGameboard.setMarkedSpotsGameboard([1, 3, 7, 8, 12, 13, 15, 20]);
   test('can place ships in available spots', () => {
     expect(playerGameboard.placeShip([2, 5, 6])).toBe(true);
   });
@@ -29,5 +29,15 @@ describe('testing the gameboard factory functionality', () => {
   });
   test('ship does not get hit, misses instead', () => {
     expect(playerGameboard.hitShip(occupiedShips, 50)).toBe('miss');
+  });
+
+  test('ships are not all sunk', () => {
+    expect(playerGameboard.allShipsSunk(occupiedShips)).toBe(false);
+  });
+  test('all ships sink after spots are filled', () => {
+    for (let i = 0; i < occupiedShips.length; i++) {
+      playerGameboard.receiveAttack(occupiedShips[i]);
+    }
+    expect(playerGameboard.allShipsSunk(occupiedShips)).toBe(true);
   });
 });
