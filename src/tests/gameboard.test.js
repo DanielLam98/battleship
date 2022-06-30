@@ -1,4 +1,4 @@
-const Gameboard = require('../gameboard');
+const Gameboard = require('../Gameboard');
 
 describe('testing the gameboard factory functionality', () => {
   let playerGameboard = Gameboard();

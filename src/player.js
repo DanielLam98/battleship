@@ -1,4 +1,4 @@
-import Gameboard from './Gameboard';
+import Gameboard from './gameboard';
 
 const Player = () => {
   let gameboard = Gameboard();
@@ -10,4 +10,4 @@ const Player = () => {
   return { gameboard, ships, sendAttack };
 };
 
-module.exports = Player;
+export default Player;

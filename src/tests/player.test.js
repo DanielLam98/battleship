@@ -1,4 +1,4 @@
-const Player = require('../player');
+import Player from '../player';
 import Gameboard from '../Gameboard';
 
 describe('testing Player factory functions', () => {
