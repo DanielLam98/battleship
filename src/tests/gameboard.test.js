@@ -5,8 +5,8 @@ describe('testing the gameboard factory functionality', () => {
 
   const cruiser = { position: [1, 2, 3] };
   const batteship = { position: [4, 12, 22] };
-  let occupiedShips = [];
-  occupiedShips = [...cruiser.position, ...batteship.position];
+
+  let occupiedShips = [...cruiser.position, ...batteship.position];
   //playerGameboard.setMarkedSpotsGameboard([1, 3, 7, 8, 12, 13, 15, 20]);
   test('can place ships in available spots', () => {
     expect(playerGameboard.placeShip([2, 5, 6])).toBe(true);
