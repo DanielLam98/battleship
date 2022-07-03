@@ -24,5 +24,5 @@ const placePlayerShips = (ships) => {
   console.log(player);
 };
 
-main();
+//main();
 console.log('working!');
