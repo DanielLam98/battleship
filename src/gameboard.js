@@ -39,6 +39,7 @@ const Gameboard = () => {
   };
 
   return {
+    markedSpotsGameboard,
     setMarkedSpotsGameboard,
     placeShip,
     receiveAttack,

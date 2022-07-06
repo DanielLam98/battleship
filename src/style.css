@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#gameboardContainer {
+  width: 100%;
+  height: 50vw;
+
+  display: flex;
+}
+
+.playerGameboardContainer,
+.computerGameboardContainer {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  justify-content: center;
+  align-self: center;
+}
+
+table {
+  width: 80%;
+  height: 80%;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid black;
+}
