@@ -48,3 +48,17 @@ td.ships {
   border: 1px solid red;
   background-color: whitesmoke;
 }
+
+.markedSpot {
+  pointer-events: none;
+}
+
+.hitShip {
+  border: 1px solid red;
+  background-color: red;
+}
+
+.missShip {
+  border: 1px solid grey;
+  background-color: grey;
+}

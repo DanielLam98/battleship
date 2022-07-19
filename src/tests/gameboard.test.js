@@ -16,8 +16,8 @@ describe('testing the gameboard factory functionality', () => {
     expect(playerGameboard.placeShip([5, 12, 70])).toBe(false);
   });
 
-  test('cant receive attacks if the space is occupied already', () => {
-    expect(playerGameboard.receiveAttack(5)).toBe(false);
+  test('can receive attacks if the space is occupied already', () => {
+    expect(playerGameboard.receiveAttack(5)).toBe(true);
   });
   test('receives attack is the space is unoccupied, will not work with same position after', () => {
     expect(playerGameboard.receiveAttack(11)).toBe(true);

@@ -5,8 +5,18 @@ import './normalize.css';
 
 const player = Player();
 const computer = Player();
+let playerShipArr = [];
+let computerShipArr = [];
 
-const main = () => {
+const main = async () => {
+  let playerSelectedSpotsArr = [];
+  let computerSelectedSpotsArr = [];
+  //initialize the board first
+  displayGameboard('.playerGameboard');
+  displayGameboard('.computerGameboard');
+  //select spots
+  await playerSelectShips(playerSelectedSpotsArr).catch(alert);
+  //display to DOM
   placePlayerShips([
     { name: 'carrier', value: [1, 2, 3, 4, 5] },
     { name: 'battleship', value: [11, 21, 31, 41] },
@@ -21,11 +31,30 @@ const main = () => {
     { name: 'submarine', value: [1, 2, 3] },
     { name: 'patrolboat', value: [98, 99] },
   ]);
-  displayGameboard('.playerGameboard');
-  displayGameboard('.computerGameboard');
+  addPlayerAndComputerShips();
   displayShips('.playerGameboard', player.ships);
   //displayShips('.computerGameboard', player.ships);
-  selectSpot('.computerGameboardContainer');
+  playGame();
+};
+
+const playerSelectShips = async (ships) => {
+  let shipSizes = [5, 4, 3, 3, 2];
+  const playerGameboard = document
+    .querySelector('.playerGameboard')
+    .querySelectorAll('td');
+  for (let i = 0; i < shipSizes.length; i++) {
+    playerGameboard.forEach((spot) => {
+      spot.addEventListener('mouseover', (e) => {
+        {
+        }
+      });
+    });
+  }
+  function getXY() {
+    let xyBtn = document.querySelector('.changeXYBtn').querySelector('button');
+    console.log(xyBtn.textContent);
+    return xyBtn.textContent;
+  }
 };
 
 const placePlayerShips = (ships) => {
@@ -41,6 +70,13 @@ const placeComputerShips = (ships) => {
     if (computer.gameboard.placeShip(ships[i].value) === true) {
       computer.ships.push(Ship(ships[i].value));
     }
+  }
+};
+
+const addPlayerAndComputerShips = () => {
+  for (let i = 0; i < 5; i++) {
+    playerShipArr.push(...player.ships[i].position);
+    computerShipArr.push(...computer.ships[i].position);
   }
 };
 
@@ -72,31 +108,56 @@ const displayShips = (gameboard, ships) => {
   }
 };
 
-const playGame = () => {
-  let playerShipArr = [];
-  let computerShipArr = [];
+const playGame = async () => {
   //Place player ship function here
-  for (let i = 0; i < 5; i++) {
-    playerShipArr.push(...player.ships[i].position);
-    computerShipArr.push(...computer.ships[i].position);
-  }
+  const allSpots = document.querySelectorAll('td');
   while (
-    !player.gameboard.allShipsSunk(playerShipArr) ||
+    !player.gameboard.allShipsSunk(playerShipArr) &&
     !computer.gameboard.allShipsSunk(computerShipArr)
   ) {
-    //player selects a tile on computer board
+    await selectSpot('.computerGameboardContainer', computer.gameboard);
   }
+  console.log('winner!');
+  allSpots.forEach((spot) => spot.classList.add('markedSpot'));
 };
 
-const selectSpot = (gameboard, player, opponentBoard) => {
-  let response = true;
-  while (response) {
-    const gameboardTable = document
-      .querySelector(`${gameboard}`)
-      .querySelectorAll('td');
-    console.log(gameboardTable);
-    response = false;
-  }
+const selectSpot = (gameboard, opponentBoard) => {
+  const gameboardTable = document
+    .querySelector(`${gameboard}`)
+    .querySelectorAll('td');
+  return new Promise((resolve, reject) => {
+    gameboardTable.forEach((spot) => {
+      spot.addEventListener('click', (e) => handleClick(e));
+    });
+
+    const handleClick = (e) => {
+      let target = Number(e.target.getAttribute('data-key'));
+      allowedAttack(gameboard, opponentBoard, computerShipArr, target);
+      gameboardTable.forEach((spot) =>
+        spot.removeEventListener('click', handleClick)
+      );
+    };
+
+    const allowedAttack = (
+      opponentBoardclass,
+      opponentBoard,
+      shipArr,
+      target
+    ) => {
+      opponentBoard.receiveAttack(target);
+      const markedSpot = document.querySelector(
+        `${opponentBoardclass} [data-key='${target}']`
+      );
+      markedSpot.classList.add('markedSpot');
+      if (opponentBoard.hitShip(shipArr, target) == 'hit') {
+        markedSpot.classList.add('hitShip');
+        resolve(1);
+      } else if (opponentBoard.hitShip(shipArr, target) == 'miss') {
+        markedSpot.classList.add('missShip');
+        resolve(1);
+      }
+    };
+  });
 };
 
 main();

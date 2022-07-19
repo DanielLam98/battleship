@@ -1,6 +1,7 @@
 const Gameboard = () => {
   let initializeGameboard = Array.from({ length: 100 }, (_, i) => i + 1);
   let markedSpotsGameboard = [];
+  let markedShipSpots = [];
 
   const setMarkedSpotsGameboard = (position) => {
     markedSpotsGameboard.push(position);
@@ -8,10 +9,11 @@ const Gameboard = () => {
 
   const placeShip = (position) => {
     const allowedPlacement = !position.some(
-      (r) => markedSpotsGameboard.indexOf(r) >= 0
+      (r) =>
+        markedSpotsGameboard.indexOf(r) >= 0 || markedShipSpots.indexOf(r) >= 0
     );
     if (allowedPlacement) {
-      markedSpotsGameboard.push(...position);
+      markedShipSpots.push(...position);
       return allowedPlacement;
     }
     return allowedPlacement;
