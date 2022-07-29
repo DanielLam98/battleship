@@ -14,6 +14,7 @@ const main = async () => {
   //initialize the board first
   displayGameboard('.playerGameboard');
   displayGameboard('.computerGameboard');
+  changeXYBtn();
   //select spots
   await playerSelectShips(playerSelectedSpotsArr).catch(alert);
   //display to DOM
@@ -39,22 +40,65 @@ const main = async () => {
 
 const playerSelectShips = async (ships) => {
   let shipSizes = [5, 4, 3, 3, 2];
+  let shipSizesPosition = 0;
   const playerGameboard = document
     .querySelector('.playerGameboard')
     .querySelectorAll('td');
-  for (let i = 0; i < shipSizes.length; i++) {
-    playerGameboard.forEach((spot) => {
-      spot.addEventListener('mouseover', (e) => {
-        {
+
+  playerGameboard.forEach((spot) => {
+    spot.addEventListener('mouseover', () => {
+      let XY = getXY();
+      let dataKey = Number(spot.getAttribute('data-key'));
+      for (let i = 0; i < shipSizes[shipSizesPosition]; i++) {
+        if (dataKey % 10 > 10) {
+          console.log(shipSizes[i]);
+          dataKey -= shipSizes[i];
         }
-      });
+        let hoveredSpot = document.querySelector(
+          `.playerGameboard [data-key='${dataKey++}']`
+        );
+        hoveredSpot.classList.add('shipOnHover');
+      }
+      spot.onclick = (e) => {
+        const placement = placeShipOnClick(e);
+      };
     });
+    spot.addEventListener('mouseout', () => {
+      let XY = getXY();
+      let dataKey = Number(spot.getAttribute('data-key'));
+      for (let i = 0; i < shipSizes[shipSizesPosition]; i++) {
+        if (dataKey % 10 > 10) {
+          dataKey -= shipSizes[i];
+        }
+        let hoveredSpot = document.querySelector(
+          `.playerGameboard [data-key='${dataKey++}']`
+        );
+        hoveredSpot.classList.remove('shipOnHover');
+        console.log(hoveredSpot);
+      }
+    });
+  });
+
+  function placeShipOnClick(spot) {
+    console.log(spot.srcElement);
   }
+
   function getXY() {
     let xyBtn = document.querySelector('.changeXYBtn').querySelector('button');
-    console.log(xyBtn.textContent);
+
     return xyBtn.textContent;
   }
+};
+
+const changeXYBtn = () => {
+  const XYbtn = document.querySelector('.changeXYBtn button');
+  XYbtn.addEventListener('click', () => {
+    if (XYbtn.textContent == 'X') {
+      XYbtn.textContent = 'Y';
+    } else if (XYbtn.textContent == 'Y') {
+      XYbtn.textContent = 'X';
+    }
+  });
 };
 
 const placePlayerShips = (ships) => {
